@@ -215,3 +215,7 @@ FakesAssemblies/
 **/*.Server/GeneratedArtifacts
 **/*.Server/ModelManifest.xml
 _Pvt_Extensions
+.vscode/launch.json
+.vscode/tasks.json
+multiset task/.vscode/launch.json
+multiset task/.vscode/tasks.json
