@@ -1,68 +1,63 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Bag<T>
 {
-    private Dictionary<T, uint> dictionary;
+    private readonly Dictionary<T, uint> _dictionary;
 
-    public Bag() => dictionary = new Dictionary<T, uint>();
+    public Bag() => _dictionary = new Dictionary<T, uint>();
 
-    private Bag(Dictionary<T, uint> dict) => dictionary = new Dictionary<T, uint>(dict);
+    private Bag(Dictionary<T, uint> dict) => _dictionary = new Dictionary<T, uint>(dict);
 
     public void Add(T v, uint n)
     {
-        if (dictionary.ContainsKey(v))
-            dictionary[v] += n;
+        if (_dictionary.ContainsKey(v))
+            _dictionary[v] += n;
         else
-            dictionary.Add(v, n);
+            _dictionary.Add(v, n);
     }
 
     public void Remove(T v, uint n)
     {
-        if (dictionary.ContainsKey(v))
-            if (dictionary[v] - n <= 0)
-                dictionary.Remove(v);
-            else 
-                dictionary[v] -= n;
+        if (_dictionary.ContainsKey(v))
+            if (_dictionary[v] - n <= 0)
+                _dictionary.Remove(v);
+            else
+                _dictionary[v] -= n;
     }
 
-    public Bag<T> Substract (Bag<T> other) 
+    public Bag<T> Substract(Bag<T> other)
     {
-        Bag<T> newBag = new Bag<T>(dictionary); 
-        foreach(var keyValuePair in dictionary)
-            if (other.dictionary.ContainsKey(keyValuePair.Key))
-                newBag.Remove(keyValuePair.Key, other.dictionary[keyValuePair.Key]);
+        var newBag = new Bag<T>(_dictionary);
+        foreach (var keyValuePair in _dictionary)
+            if (other._dictionary.ContainsKey(keyValuePair.Key))
+                newBag.Remove(keyValuePair.Key, other._dictionary[keyValuePair.Key]);
         return newBag;
     }
 
-    public override bool Equals(object obj) 
+    public override bool Equals(object obj)
     {
-        
         if (obj == null || GetType() != obj.GetType())
             return false;
-        var dict1 = this.dictionary;
-        var dict2 = ((Bag<T>)obj).dictionary;
-        return dict1.Count == dict2.Count && isSubdictionary(dict1, dict2);
-    }
-    
-    private bool isSubdictionary(Dictionary<T, uint> dict1, Dictionary<T, uint> dict2)
-    {
-        foreach(var keyValuePair in dict1)
-            if (!dict2.ContainsKey(keyValuePair.Key) || dict2[keyValuePair.Key] != keyValuePair.Value)
-                return false;
-        return true;
+        var dict1 = this._dictionary;
+        var dict2 = ((Bag<T>) obj)._dictionary;
+        return dict1.Count == dict2.Count && IsSubdictionary(dict1, dict2);
     }
 
-    public override int GetHashCode() => dictionary.GetHashCode();
+    private static bool IsSubdictionary(Dictionary<T, uint> dict1, Dictionary<T, uint> dict2)
+    {
+        return dict1.All(keyValuePair =>
+            dict2.ContainsKey(keyValuePair.Key) && dict2[keyValuePair.Key] == keyValuePair.Value);
+    }
+
+    public override int GetHashCode() => _dictionary.GetHashCode();
 
     public static Bag<T> operator -(Bag<T> left, Bag<T> right) => left.Substract(right);
 
     public override string ToString()
     {
-        string s = string.Empty;
-        foreach(var keyValuePair in dictionary)
-            s += $"Obj={keyValuePair.Key.ToString()} num={keyValuePair.Value}\t";
-        return s;
+        return _dictionary.Aggregate(string.Empty, (current, keyValuePair) =>
+            current + $"Obj={keyValuePair.Key.ToString()} num={keyValuePair.Value}\t");
     }
-    
 }

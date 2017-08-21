@@ -219,3 +219,9 @@ _Pvt_Extensions
 .vscode/tasks.json
 multiset task/.vscode/launch.json
 multiset task/.vscode/tasks.json
+
+multiset task/\.idea/\.idea\.multiset task/\.idea/
+
+multiset task/\.idea/\.idea\.multiset task/
+
+multiset task/multiset task\.sln

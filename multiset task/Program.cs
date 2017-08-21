@@ -11,9 +11,9 @@ class Program
         bag1.Add("2", 2);
         bag1.Add("3", 2);
         bag2.Add("1", 2);
-        bag2.Add("2", 1);  
+        bag2.Add("2", 1);
         bag3.Add("1", 2);
-        bag3.Add("2", 1);      
+        bag3.Add("2", 1);
         Console.WriteLine(bag1);
         bag1 -= bag2;
         bag1.Remove("3", 1);
